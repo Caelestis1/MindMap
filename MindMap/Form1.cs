@@ -88,22 +88,19 @@ namespace MindMap
             centerX = pnlCanvas.Width / 2;
             centerY = pnlCanvas.Height / 2;
 
-            int pnlW = pnlCanvas.Width;
-            int pnlH = pnlCanvas.Height;
+            // Take the smaller of the panel width or height and use that to create a bounding box
+            // for the central circle
+            int centerSquare = pnlCanvas.Width;
 
-            if (pnlW < pnlH)
+            if (pnlCanvas.Height < pnlCanvas.Width)
             {
-                pnlH = pnlW;
-            }
-            else
-            {
-                pnlW = pnlH;
+                centerSquare = pnlCanvas.Height;
             }
 
-            mainCircle = new Rectangle(centerX - ((pnlW - panelSpace) / 2), centerY - ((pnlH - panelSpace) / 2), pnlW - panelSpace, pnlH - panelSpace);
+            mainCircle = new Rectangle(centerX - ((centerSquare - panelSpace) / 2), centerY - ((centerSquare - panelSpace) / 2), centerSquare - panelSpace, centerSquare - panelSpace);
             mainCircleX = centerX;
             mainCircleY = centerY;
-            mainCircleRadius = (pnlW - panelSpace) / 2;
+            mainCircleRadius = (centerSquare - panelSpace) / 2;
 
 
             Node.centerX = centerX;
@@ -527,10 +524,12 @@ namespace MindMap
                         if (masterRootNode.children != null && masterRootNode.children.Count() >= maxNodes)
                         {
                             VerticalScrollAndDisplay = true;
+                            formatAsLine();
                         }
                         else
                         {
                             VerticalScrollAndDisplay = false;
+                            formatAsCircle();
                         }
 
                         pnlCanvas.Invalidate();
