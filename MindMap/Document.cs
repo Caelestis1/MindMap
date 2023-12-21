@@ -16,8 +16,8 @@ namespace MindMap
         {
             InitializeComponent();
             wbvDocumentDisplay.Source = null;
-            
- 
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         async public void setSource(String html)

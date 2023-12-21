@@ -35,6 +35,7 @@
             // wbvDocumentDisplay
             // 
             wbvDocumentDisplay.AllowExternalDrop = true;
+            wbvDocumentDisplay.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             wbvDocumentDisplay.CreationProperties = null;
             wbvDocumentDisplay.DefaultBackgroundColor = Color.White;
             wbvDocumentDisplay.Location = new Point(12, 57);

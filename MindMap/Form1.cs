@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Numerics;
 using System.Reflection;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace MindMap
 {
@@ -221,18 +223,27 @@ namespace MindMap
 
                     foreach (Node node in masterRootNode.children)
                     {
-                        g.FillEllipse(brush, node.Bounds);
-                        if (node.children != null && node.children.Count() > 0)
+                        if (draggedNode == null || draggedNode != node)
                         {
-                            g.FillEllipse(subElementBrush, node.smallBounds);
+                            drawNode(sender, e, node, g);
                         }
+                        //g.FillEllipse(brush, node.Bounds);
+                        //if (node.children != null && node.children.Count() > 0)
+                        //{
+                        //    g.FillEllipse(subElementBrush, node.smallBounds);
+                        //}
 
-                        stringLength = g.MeasureString(node.shortTitle, textFont);
-                        remainder = (node.width - stringLength.Width) / 2;
-                        ypos = (node.height / 2) - (stringLength.Height / 2);
+                        //stringLength = g.MeasureString(node.shortTitle, textFont);
+                        //remainder = (node.width - stringLength.Width) / 2;
+                        //ypos = (node.height / 2) - (stringLength.Height / 2);
 
-                        g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
+                        //g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
 
+                    }
+
+                    if (draggedNode != null)
+                    {
+                        drawNode(sender, e, draggedNode, g);
                     }
                 }
             }
@@ -246,22 +257,41 @@ namespace MindMap
 
                     foreach (Node node in masterRootNode.children)
                     {
-                        g.FillEllipse(brush, node.Bounds);
-                        if (node.children != null && node.children.Count() > 0)
-                        {
-                            g.FillEllipse(subElementBrush, node.smallBounds);
-                        }
+                        drawNode(sender, e, node, g);
+                        //g.FillEllipse(brush, node.Bounds);
+                        //if (node.children != null && node.children.Count() > 0)
+                        //{
+                        //    g.FillEllipse(subElementBrush, node.smallBounds);
+                        //}
 
-                        stringLength = g.MeasureString(node.shortTitle, textFont);
-                        remainder = (node.width - stringLength.Width) / 2;
-                        ypos = (node.height / 2) - (stringLength.Height / 2);
+                        //stringLength = g.MeasureString(node.shortTitle, textFont);
+                        //remainder = (node.width - stringLength.Width) / 2;
+                        //ypos = (node.height / 2) - (stringLength.Height / 2);
 
-                        g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
+                        //g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
                     }
                 }
             }
         }
 
+        private void drawNode(object sender, PaintEventArgs e, Node node, Graphics g)
+        {
+            SizeF stringLength;
+            float remainder;
+            float ypos;
+
+            g.FillEllipse(brush, node.Bounds);
+            if (node.children != null && node.children.Count() > 0)
+            {
+                g.FillEllipse(subElementBrush, node.smallBounds);
+            }
+
+            stringLength = g.MeasureString(node.shortTitle, textFont);
+            remainder = (node.width - stringLength.Width) / 2;
+            ypos = (node.height / 2) - (stringLength.Height / 2);
+
+            g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
+        }
 
         private Node findRootNode(int X, int Y)
         {
@@ -767,8 +797,9 @@ namespace MindMap
                 MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
                 html = Markdown.ToHtml(html, pipeline);
                 html = html + "<script type=\"module\">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';</script>";
-                
+
                 document.setSource(html);
+
                 document.ShowDialog();
                 return;
             }
