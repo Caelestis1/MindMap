@@ -276,6 +276,28 @@ namespace MindMap
             return returnValue;
         }
 
+        private Node findNodeExcluding(int X, int Y, Node nodeToExclude)
+        {
+            Node returnValue = null;
+
+            //foreach (Node node in nodes)
+            if (masterRootNode.children != null)
+            {
+                foreach (Node node in masterRootNode.children)
+                {
+                    if (X >= node.positionX && X <= node.positionX + node.width
+                        && Y >= node.positionY && Y <= node.positionY + node.height
+                        && node != nodeToExclude)
+                    {
+                        returnValue = node;
+                        break;
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+
         private Node findNode(int X, int Y)
         {
             Node returnValue = null;
@@ -357,6 +379,28 @@ namespace MindMap
                 {
                     masterRootNode.children.Remove(draggedNode);
 
+                    if (masterRootNode.children.Count() < maxNodes)
+                    {
+                        VerticalScrollAndDisplay = false;
+
+                        formatAsCircle();
+
+                    }
+                    dataChanged = true;
+                    processed = true;
+                }
+            }
+
+            if (draggedNode != null)
+            {
+                Node node = findNodeExcluding(e.X, e.Y, draggedNode);
+
+                if (node != null)
+                {
+                    Debug.WriteLine(String.Format("Got [{0}]", node.title));
+                    node.addChildNode(draggedNode);
+                    draggedNode.parent = node;
+                    masterRootNode.children.Remove(draggedNode);
                     if (masterRootNode.children.Count() < maxNodes)
                     {
                         VerticalScrollAndDisplay = false;

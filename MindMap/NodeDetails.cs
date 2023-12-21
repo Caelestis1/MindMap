@@ -31,7 +31,7 @@ namespace MindMap
             InitializeComponent();
 
             wv2.Source = null;
-            wv2.EnsureCoreWebView2Async();
+       
             //this.Controls.Add(wb);
 
             //wb.Height = rtbNodeDescription.Height;
@@ -56,18 +56,23 @@ namespace MindMap
             generateMarkdown();
         }
 
-        public void generateMarkdown()
+        async public void generateMarkdown()
         {
             //.DocumentText = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
             //String html = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
-            String html = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
+            String theDescription = "";
+            if (rtbNodeDescription.Text != null)
+            {
+                theDescription = rtbNodeDescription.Text;
+            }
+            String html = Markdown.ToHtml(theDescription, pipeline);
             if (rtbNodeDescription.Text.Length == 0 && wv2.Source != null)
             {
                 wv2.NavigateToString("");
             } else if (html != null && html.Length > 0)
             {
                 html = html + "<script type=\"module\">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';</script>";
-                
+                await wv2.EnsureCoreWebView2Async();
                 wv2.NavigateToString(html);
                 
             }
