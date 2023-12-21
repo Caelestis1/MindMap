@@ -227,18 +227,6 @@ namespace MindMap
                         {
                             drawNode(sender, e, node, g);
                         }
-                        //g.FillEllipse(brush, node.Bounds);
-                        //if (node.children != null && node.children.Count() > 0)
-                        //{
-                        //    g.FillEllipse(subElementBrush, node.smallBounds);
-                        //}
-
-                        //stringLength = g.MeasureString(node.shortTitle, textFont);
-                        //remainder = (node.width - stringLength.Width) / 2;
-                        //ypos = (node.height / 2) - (stringLength.Height / 2);
-
-                        //g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
-
                     }
 
                     if (draggedNode != null)
@@ -257,18 +245,15 @@ namespace MindMap
 
                     foreach (Node node in masterRootNode.children)
                     {
-                        drawNode(sender, e, node, g);
-                        //g.FillEllipse(brush, node.Bounds);
-                        //if (node.children != null && node.children.Count() > 0)
-                        //{
-                        //    g.FillEllipse(subElementBrush, node.smallBounds);
-                        //}
+                        if (draggedNode == null || draggedNode != node)
+                        {
+                            drawNode(sender, e, node, g);
+                        }
+                    }
 
-                        //stringLength = g.MeasureString(node.shortTitle, textFont);
-                        //remainder = (node.width - stringLength.Width) / 2;
-                        //ypos = (node.height / 2) - (stringLength.Height / 2);
-
-                        //g.DrawString(node.shortTitle, textFont, textBrush, node.positionX + remainder, node.positionY + ypos);
+                    if (draggedNode != null)
+                    {
+                        drawNode(sender, e, draggedNode, g);
                     }
                 }
             }
