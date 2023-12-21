@@ -7,13 +7,15 @@ namespace MindMap
 {
     public partial class Form1 : Form
     {
+
+        int panelSpace = 110;
+
+
         int centerX = 0;
         int centerY = 0;
 
         int standardNodeWidth = 110;
         int standardNodeHeight = 110;
-
-        int panelSpace = 110;
 
         int standardNodeHalfWidth;
 
@@ -431,21 +433,14 @@ namespace MindMap
                             masterRootNode = masterRootNode.parent;
                             masterRootNode.setPositionX(masterNodeBounds.X);
                             masterRootNode.setPositionY(masterNodeBounds.Y);
-                            if (masterRootNode.children.Count() >= maxNodes)
-                            {
-                                formatAsLine();
-                            }
-                            else
-                            {
-                                formatAsCircle();
-                            }
-
                             if (masterRootNode.children != null && masterRootNode.children.Count() >= maxNodes)
                             {
+                                formatAsLine();
                                 VerticalScrollAndDisplay = true;
                             }
                             else
                             {
+                                formatAsCircle();
                                 VerticalScrollAndDisplay = false;
                             }
 
@@ -555,16 +550,11 @@ namespace MindMap
                 currentAngle -= 2;
             }
 
-
             int x = (int)(mainCircleX + mainCircleRadius * Math.Cos((currentAngle * (Math.PI / 180))));
             int y = (int)(mainCircleY + mainCircleRadius * Math.Sin((currentAngle * (Math.PI / 180))));
             node.setPositionX(x - standardNodeHalfWidth);
             node.setPositionY(y - standardNodeHalfWidth);
             node.angle = currentAngle;
-
-
-
-
         }
 
         private void my_MouseWheel(object sender, MouseEventArgs e)

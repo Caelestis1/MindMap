@@ -27,9 +27,7 @@ namespace MindMap
         {
             InitializeComponent();
 
-
             this.Controls.Add(wb);
-
 
             wb.Height = rtbNodeDescription.Height;
             wb.Left = rtbNodeDescription.Right + 10;
@@ -40,14 +38,12 @@ namespace MindMap
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            btnPressed = BTN_SAVE;
-            Hide();
+            saveRoutine();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            btnPressed = BTN_CANCEL;
-            Hide();
+            cancelRoutine();
         }
 
         private void rtbNodeDescription_TextChanged(object sender, EventArgs e)
@@ -64,12 +60,10 @@ namespace MindMap
         {
             if ((e.KeyData & Keys.Enter) == Keys.Enter && (e.KeyData & Keys.Control) == Keys.Control)
             {
-                btnPressed = BTN_SAVE;
-                Hide();
+                saveRoutine();
             } else if ((e.KeyData & Keys.Escape) == Keys.Escape)
             {
-                btnPressed = BTN_CANCEL;
-                Hide();
+                cancelRoutine();
             }
         }
 
@@ -77,14 +71,26 @@ namespace MindMap
         {
             if ((e.KeyData & Keys.Enter) == Keys.Enter && (e.KeyData & Keys.Control) == Keys.Control)
             {
-                btnPressed = BTN_SAVE;
-                Hide();
+                saveRoutine();
             }
             else if ((e.KeyData & Keys.Escape) == Keys.Escape)
             {
-                btnPressed = BTN_CANCEL;
-                Hide();
+                cancelRoutine();
             }
+        }
+
+        private void saveRoutine()
+        {
+            btnPressed = BTN_SAVE;
+            wb.Dispose();
+            Hide();
+        }
+
+        private void cancelRoutine()
+        {
+            btnPressed = BTN_CANCEL;
+            wb.Dispose();
+            Hide();
         }
     }
 }
