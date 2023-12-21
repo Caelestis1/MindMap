@@ -1,3 +1,4 @@
+using Markdig;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Numerics;
@@ -696,6 +697,19 @@ namespace MindMap
             else if (e.KeyCode == Keys.O)
             {
                 loadFile();
+                return;
+            }
+            else if (e.KeyCode == Keys.E)
+            {
+                Document document = new Document();
+                MapMarkdownGenerator gen = new MapMarkdownGenerator();
+                String html = gen.generateMarkDown(masterRootNode);
+                MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+                html = Markdown.ToHtml(html, pipeline);
+                html = html + "<script type=\"module\">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';</script>";
+                
+                document.setSource(html);
+                document.ShowDialog();
                 return;
             }
             else if (e.KeyCode == Keys.Enter && enterPressedOnForm)

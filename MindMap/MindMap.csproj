@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.34.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

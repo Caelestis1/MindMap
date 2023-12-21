@@ -1,4 +1,5 @@
 ﻿using Markdig;
+using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,9 @@ namespace MindMap
 
         public int btnPressed = -1;
 
-        WebBrowser wb = new WebBrowser();
+        //WebBrowser wb = new WebBrowser();
+
+        //WebView2 wv2 = new WebView2();
 
         MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 
@@ -27,12 +30,14 @@ namespace MindMap
         {
             InitializeComponent();
 
-            this.Controls.Add(wb);
+            wv2.Source = null;
+            wv2.EnsureCoreWebView2Async();
+            //this.Controls.Add(wb);
 
-            wb.Height = rtbNodeDescription.Height;
-            wb.Left = rtbNodeDescription.Right + 10;
-            wb.Width = (this.Width - wb.Left) - 30;
-            wb.Top = rtbNodeDescription.Top;
+            //wb.Height = rtbNodeDescription.Height;
+            //wb.Left = rtbNodeDescription.Right + 10;
+            //wb.Width = (this.Width - wb.Left) - 30;
+            //wb.Top = rtbNodeDescription.Top;
 
         }
 
@@ -53,22 +58,28 @@ namespace MindMap
 
         public void generateMarkdown()
         {
-            wb.DocumentText = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
-        }
-
-        private void rtbNodeDescription_KeyUp(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyData & Keys.Enter) == Keys.Enter && (e.KeyData & Keys.Control) == Keys.Control)
+            //.DocumentText = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
+            //String html = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
+            String html = Markdown.ToHtml(rtbNodeDescription.Text, pipeline);
+            if (rtbNodeDescription.Text.Length == 0 && wv2.Source != null)
             {
-                saveRoutine();
-            } else if ((e.KeyData & Keys.Escape) == Keys.Escape)
+                wv2.NavigateToString("");
+            } else if (html != null && html.Length > 0)
             {
-                cancelRoutine();
+                html = html + "<script type=\"module\">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';</script>";
+                
+                wv2.NavigateToString(html);
+                
             }
+            
         }
 
-        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
+        private void handleKeys(object sender, KeyEventArgs e)
         {
+            if (e.KeyData == Keys.Oem8)
+            {
+                return;
+            }
             if ((e.KeyData & Keys.Enter) == Keys.Enter && (e.KeyData & Keys.Control) == Keys.Control)
             {
                 saveRoutine();
@@ -79,18 +90,29 @@ namespace MindMap
             }
         }
 
+        private void rtbNodeDescription_KeyUp(object sender, KeyEventArgs e)
+        {
+            handleKeys(sender, e);
+        }
+
+        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
+        {
+            handleKeys(sender, e);
+        }
+
         private void saveRoutine()
         {
             btnPressed = BTN_SAVE;
-            wb.Dispose();
+            //wb.Dispose();
             Hide();
         }
 
         private void cancelRoutine()
         {
             btnPressed = BTN_CANCEL;
-            wb.Dispose();
+            //wb.Dispose();
             Hide();
         }
+
     }
 }

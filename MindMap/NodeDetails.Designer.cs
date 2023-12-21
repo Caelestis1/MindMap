@@ -32,6 +32,8 @@
             rtbNodeDescription = new RichTextBox();
             btnSave = new Button();
             btnCancel = new Button();
+            wv2 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((System.ComponentModel.ISupportInitialize)wv2).BeginInit();
             SuspendLayout();
             // 
             // txtTitle
@@ -73,12 +75,24 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // wv2
+            // 
+            wv2.AllowExternalDrop = true;
+            wv2.CreationProperties = null;
+            wv2.DefaultBackgroundColor = Color.White;
+            wv2.Location = new Point(378, 80);
+            wv2.Name = "wv2";
+            wv2.Size = new Size(406, 323);
+            wv2.TabIndex = 4;
+            wv2.ZoomFactor = 1D;
+            // 
             // NodeDetails
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             ControlBox = false;
+            Controls.Add(wv2);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(rtbNodeDescription);
@@ -89,6 +103,7 @@
             Name = "NodeDetails";
             ShowInTaskbar = false;
             Text = "Node Details";
+            ((System.ComponentModel.ISupportInitialize)wv2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -98,5 +113,6 @@
         private Button btnCancel;
         public TextBox txtTitle;
         public RichTextBox rtbNodeDescription;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wv2;
     }
 }
