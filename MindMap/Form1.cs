@@ -411,6 +411,22 @@ namespace MindMap
                     dataChanged = true;
                     processed = true;
                 }
+
+                if (node == null && masterRootNode.parent != null)
+                {
+                    if (e.X <= masterRootNode.parent.positionX + masterRootNode.parent.width
+                        && e.X >= masterRootNode.parent.positionX
+                        && e.Y >= masterRootNode.parent.positionY
+                        && e.Y <= masterRootNode.parent.positionX + masterRootNode.parent.height)
+                    {
+                        draggedNode.parent = masterRootNode.parent;
+                        masterRootNode.parent.addChildNode(draggedNode);
+                        masterRootNode.children.Remove(draggedNode);
+
+                        dataChanged = true;
+                        processed = true;
+                    }
+                }
             }
 
             if (!processed)
