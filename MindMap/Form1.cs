@@ -76,6 +76,9 @@ namespace MindMap
         // Declare and instantiate the main brush used for drawing text
         Brush textBrush = new SolidBrush(Color.White);
 
+        Rectangle parentHighlight;
+
+        float[] lineToParentXandY;
 
         public Form1()
         {
@@ -163,6 +166,10 @@ namespace MindMap
             brush = new SolidBrush(mainColor);
             textBrush = new SolidBrush(Color.White);
 
+            parentHighlight = new Rectangle(6, 6, standardNodeHeight + 9, standardNodeWidth + 9);
+
+            lineToParentXandY = generateLineVector();
+
             pnlCanvas.Paint += new PaintEventHandler(panel1_Paint);
             this.pnlCanvas.MouseWheel += my_MouseWheel;
 
@@ -180,6 +187,10 @@ namespace MindMap
 
             if (masterRootNode.parent != null)
             {
+                //g.DrawEllipse(myPen, parentHighlight);
+                g.DrawArc(myPen, parentHighlight, -45, 180);
+                g.DrawLine(myPen, lineToParentXandY[0], lineToParentXandY[1], centerX, centerY);
+
                 Node parentNode = masterRootNode.parent;
                 g.FillEllipse(brush, parentNode.Bounds);
                 stringLength = g.MeasureString(parentNode.shortTitle, textFont);
@@ -356,6 +367,22 @@ namespace MindMap
         private void pullNodeToVerticalLine(Node nodeToMove)
         {
             nodeToMove.setPositionX((mainCircleX + mainCircleRadius) - standardNodeHalfWidth);
+        }
+
+        private float[] generateLineVector()
+        {
+            Vector2 centerPoint = new Vector2(10 + standardNodeHalfWidth, 10 + standardNodeHalfWidth);
+            Vector2 nodeVectorPoint = new Vector2(centerX, centerY);
+
+
+            Vector2 delta = centerPoint - nodeVectorPoint;
+
+            float distance = delta.Length();
+            Vector2 direction = delta / distance;
+
+            var otherPoint = nodeVectorPoint + direction * (distance - (standardNodeHalfWidth + 5));
+
+            return new float[] { otherPoint.X, otherPoint.Y };
         }
 
         private void pullNodeToCircle(Node nodeToMove)

@@ -20,6 +20,7 @@ namespace MindMap
             message.Append(String.Format("F - Format current nodes {0}", Environment.NewLine));
             message.Append(String.Format("O - Open/Load existing map {0}", Environment.NewLine));
             message.Append(String.Format("S - Save current map {0}", Environment.NewLine));
+            message.Append(String.Format("E - Export to a html page with the mind map and details {0}", Environment.NewLine));
             message.Append(String.Format("Insert - Add a new node {0}", Environment.NewLine));
             message.Append(String.Format("Enter - Edit the last inserted node {0}", Environment.NewLine));
             message.Append(String.Format("Ctrl+X - Exit application {0}", Environment.NewLine));
